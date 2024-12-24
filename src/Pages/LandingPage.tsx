@@ -2,13 +2,14 @@ import CarouselBar from '@/components/CarouselBar'
 import FooterBar from '@/components/FooterBar'
 import NavBar from '@/components/NavBar'
 import StockForecastCard from '@/components/StockForecastCard'
-import React from 'react'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 
 const LandingPage = () => {
   return (
     <>
      <main className="flex flex-col min-h-screen">
+     <ThemeProvider>
       {/* Header Section */}
       <header>
         <NavBar />
@@ -24,6 +25,7 @@ const LandingPage = () => {
       <footer>
         <FooterBar />
       </footer>
+      </ThemeProvider>
     </main>
     </>
   )

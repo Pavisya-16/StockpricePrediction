@@ -18,26 +18,26 @@ import { FiLogIn } from "react-icons/fi";
 import { LuUserRoundPlus } from "react-icons/lu";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { FaSearchDollar } from "react-icons/fa";
-import { GiPayMoney } from "react-icons/gi";
+import { GiPayMoney, GiTorch } from "react-icons/gi";
 import { GiBurningEmbers } from "react-icons/gi";
 import { Link } from 'react-router-dom';
+import { ThemeToggle } from './ThemeProvider';
+import { VscSearch } from 'react-icons/vsc';
 
 const NavBar = () => {
   const [position, setPosition] = React.useState("bottom");
 
   return (
-    <div className="bg-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto flex flex-wrap items-center justify-between px-4 py-3 md:px-8 lg:px-24">
+    <header className=" shadow-md sticky top-0 z-50">
+      <div className="container flex flex-wrap items-center justify-between px-2 py-3 md:px-9 lg:px-24">
         {/* Logo Section */}
-        <div className="flex items-center space-x-3">
-          <GiBurningEmbers size={36} className="text-black-500" />
-          <span className="text-xl md:text-2xl font-semibold text-gray-800">
-            STOCK VISION
-          </span>
+        <div className="flex items-center md:text-3xl font-semibold py-1 ">
+        STOCK VISION
+          <GiTorch  size={56} className=" mr-5  text-white bg-gradient-to-r  from-black via-blue-500 to-purple-500 p-3 rounded-full hover:text-black transition duration-300" /> 
         </div>
 
         {/* Dropdown Menus */}
-        <div className="flex flex-wrap items-center space-x-4 md:space-x-6">
+        <div className="flex flex-wrap items-center space-x-5 md:space-x-3">
           {/* Elite Investments Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -84,7 +84,7 @@ const NavBar = () => {
           {/* Get Connected Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="text-gray-800 border-gray-300">
+              <Button variant="outline" className=" border-gray-300">
                 Get Connected
               </Button>
             </DropdownMenuTrigger>
@@ -107,9 +107,18 @@ const NavBar = () => {
               </DropdownMenuItem></Link>
             </DropdownMenuContent>
           </DropdownMenu>
+           
+
+          {/* Theme Change */}
+          <span
+          className="text-slate-500 border-gray-700 hover:bg-gray-200 dark:text-white p-3 rounded-full border-slate-600 dark:border-gray-300 dark:hover:bg-gray-700 px-3 py-2 transition duration-200 ease-in-out "
+        >
+          <ThemeToggle />
+        </span>
+
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
