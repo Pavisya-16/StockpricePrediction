@@ -7,13 +7,11 @@ import { FaUserPlus } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import SignUpApi from '@/api/SignUpApi';
 import { ThemeProvider, ThemeToggle } from '@/components/ThemeProvider';
-import { GiBabyFace, GiTorch } from 'react-icons/gi';
-import { Link } from 'lucide-react';
+import { GiTorch } from 'react-icons/gi';
 
 const Signup = () => {
   const navigate = useNavigate();
 
-  // Formik configuration
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -42,109 +40,95 @@ const Signup = () => {
 
   return (
     <ThemeProvider>
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-      {/* Theme Toggle */}
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
-      
-      <div className="absolute top-4 left-4">
-        {/* Logo Section */}
-        <Link to="LandingPage">
-         <GiTorch  size={56} className=" mr-5  text-white bg-gradient-to-r  from-black via-blue-500 to-purple-500 p-3 rounded-full hover:text-black transition duration-300" /> 
-         </Link>
-      </div>
-      
-
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-        <div className="text-center mb-6">
-          <h2 className="flex justify-center items-center space-x-2 text-2xl font-semibold">
-            <FaUserPlus size={28} />
-            <span>Sign Up</span>
-          </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Create an account to get started
-          </p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+        {/* Theme Toggle */}
+        <div className="absolute top-4 right-4">
+          <ThemeToggle />
         </div>
 
-        {formik.errors.username || formik.errors.email || formik.errors.password ? (
-          <div className="mb-4 text-red-600 text-center">
-            {formik.errors.username || formik.errors.email || formik.errors.password}
+        {/* GiTorch Logo Section */}
+        <div className="absolute top-7 left-4">
+          <GiTorch
+            size={56}
+            className="text-white bg-gradient-to-r from-black via-blue-500 to-purple-500 p-3 rounded-full hover:text-black transition duration-300"
+          />
+        </div>
+
+        {/* Signup Form */}
+        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          <div className="text-center mb-6">
+            <h2 className="flex justify-center items-center space-x-2 text-2xl font-semibold">
+              <FaUserPlus size={28} />
+              <span>Sign Up</span>
+            </h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Create an account to get started
+            </p>
           </div>
-        ) : null}
 
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
-          {/* Username Input */}
-          <div className="flex items-center border-b-2 border-gray-300 dark:border-gray-600 py-2">
-            <FiUser size={20} className="mr-3 text-gray-500 dark:text-gray-400" />
-            <Input
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Username"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.username}
-              className="w-full bg-transparent border-none focus:outline-none text-gray-800 dark:text-gray-200"
-            />
-          </div>
-          {formik.touched.username && formik.errors.username ? (
-            <div className="text-sm text-red-500">{formik.errors.username}</div>
-          ) : null}
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
+            {/* Username Input */}
+            <div className="flex items-center border-b-2 border-gray-300 dark:border-gray-600 py-2">
+              <FiUser size={20} className="mr-3 text-gray-500 dark:text-gray-400" />
+              <Input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Username"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.username}
+                className="w-full bg-transparent border-none focus:outline-none text-gray-800 dark:text-gray-200"
+              />
+            </div>
 
-          {/* Email Input */}
-          <div className="flex items-center border-b-2 border-gray-300 dark:border-gray-600 py-2">
-            <FiMail size={20} className="mr-3 text-gray-500 dark:text-gray-400" />
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
-              className="w-full bg-transparent border-none focus:outline-none text-gray-800 dark:text-gray-200"
-            />
-          </div>
-          {formik.touched.email && formik.errors.email ? (
-            <div className="text-sm text-red-500">{formik.errors.email}</div>
-          ) : null}
+            {/* Email Input */}
+            <div className="flex items-center border-b-2 border-gray-300 dark:border-gray-600 py-2">
+              <FiMail size={20} className="mr-3 text-gray-500 dark:text-gray-400" />
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                className="w-full bg-transparent border-none focus:outline-none text-gray-800 dark:text-gray-200"
+              />
+            </div>
 
-          {/* Password Input */}
-          <div className="flex items-center border-b-2 border-gray-300 dark:border-gray-600 py-2">
-            <FiLock size={20} className="mr-3 text-gray-500 dark:text-gray-400" />
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-              className="w-full bg-transparent border-none focus:outline-none text-gray-800 dark:text-gray-200"
-            />
-          </div>
-          {formik.touched.password && formik.errors.password ? (
-            <div className="text-sm text-red-500">{formik.errors.password}</div>
-          ) : null}
+            {/* Password Input */}
+            <div className="flex items-center border-b-2 border-gray-300 dark:border-gray-600 py-2">
+              <FiLock size={20} className="mr-3 text-gray-500 dark:text-gray-400" />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+                className="w-full bg-transparent border-none focus:outline-none text-gray-800 dark:text-gray-200"
+              />
+            </div>
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full mt-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            Sign Up
-          </Button>
-        </form>
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full mt-6 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              Sign Up
+            </Button>
+          </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-          Already have an account?{' '}
-          <a href="/Signin" className="text-blue-600 dark:text-blue-400 hover:underline">
-            Log in
-          </a>
-        </p>
+          <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+            Already have an account?{' '}
+            <a href="/Signin" className="text-blue-600 dark:text-blue-400 hover:underline">
+              Log in
+            </a>
+          </p>
+        </div>
       </div>
-    </div>
     </ThemeProvider>
   );
 };
