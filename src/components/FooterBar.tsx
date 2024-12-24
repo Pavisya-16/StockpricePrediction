@@ -5,14 +5,14 @@ import { MdOutlineLightbulbCircle } from "react-icons/md";
 
 const FooterBar = () => {
   return (
-    <footer className="bg-black text-white py-6 mt-7">
+    <footer className="bg-black text-white py-6 mt-7 ">
       <div className="container mx-auto px-4">
         {/* Flex Container with Column Layout */}
-        <div className="flex flex-col md:flex-row justify-between items-start space-y-6 md:space-y-0">
+        <div className="flex flex-column md:flex-row justify-between items-start space-y-6 md:space-y-0">
           {/* Email Icon and Text */}
           <div className="flex  space-x-2">
             <CiMail size={20} />
-            <span className="font-extralight">StockVision@company.com</span>
+            <span className="font-extralight">StockVision@prediction.com</span>
           </div>
           {/* Address Icon and Text */}
           <div className="flex space-x-2">
