@@ -14,7 +14,7 @@ const CarouselBar = () => {
         <p className="text-left text-slate-100 text-base md:text-lg font-bold capitalize bg-gradient-to-r from-gray-900 via-slate-600 to-gray-800 p-4 rounded-lg shadow-indigo-600 shadow-md mb-4">
           Stay Ahead: Revolutionize Trading with New Strategies
         </p>
-        <p className="text-left text-slate-100 text-base md:text-lg font-bold capitalize bg-gradient-to-r from-gray-900 via-slate-600 to-gray-800 p-4 rounded-lg shadow-indigo-600 shadow-md">
+        <p className="text-left text-slate-100 text-base md:text-lg font-bold capitalize bg-gradient-to-r from-gray-900 via-slate-600 to-gray-800 p-4 rounded-lg shadow-indigo-600 shadow-md mb-4">
           Innovate and Grow: Unlock New Opportunities
         </p>
       </div>
@@ -23,7 +23,7 @@ const CarouselBar = () => {
       <div className="w-full md:w-1/2 flex flex-col items-center justify-around h-[400px] md:h-[600px] relative">
         {/* Top Span */}
         <span
-          className="w-[200px] h-[150px] md:w-[300px] md:h-[200px] rounded-full shadow-lg absolute top-4 right-1/4 md:right-1/3 border-4 border-dashed border-b-zinc-700 shadow-gray-950"
+          className="w-[200px] h-[150px] md:w-[300px] md:h-[200px] rounded-full shadow-lg absolute top-4 right-1/4 md:right-1/3 border-4 border-dashed border-b-zinc-700  shadow-indigo-100"
           style={{
             backgroundImage: `url(${stock1})`,
             backgroundSize: 'cover',
@@ -33,7 +33,7 @@ const CarouselBar = () => {
 
         {/* Center Span */}
         <span
-          className="w-[200px] h-[150px] md:w-[300px] md:h-[200px] rounded-full shadow-lg absolute right-4 md:right-8 border-4 border-dashed border-b-slate-950 shadow-gray-950"
+          className="w-[200px] h-[150px] md:w-[300px] md:h-[200px] rounded-full shadow-lg absolute right-4 md:right-8 border-4 border-dashed border-b-slate-950 shadow-indigo-300"
           style={{
             backgroundImage: `url(${stock3})`,
             backgroundSize: 'cover',
@@ -43,7 +43,7 @@ const CarouselBar = () => {
 
         {/* Bottom Span */}
         <span
-          className="w-[200px] h-[150px] md:w-[300px] md:h-[200px] rounded-full shadow-lg absolute bottom-4 right-1/4 md:right-1/3 border-4 border-dashed border-b-stone-950 shadow-gray-950"
+          className="w-[200px] h-[150px] md:w-[300px] md:h-[200px] rounded-full shadow-lg absolute bottom-4 right-1/4 md:right-1/3 border-4 border-dashed border-b-stone-950 shadow-indigo-100"
           style={{
             backgroundImage: `url(${stock2})`,
             backgroundSize: 'cover',

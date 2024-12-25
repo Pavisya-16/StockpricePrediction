@@ -15,10 +15,6 @@ const App = () => {
       <Routes>
       <Route path="/" element={ <LandingPage/>} />
         <Route path="/LandingPage" element={ <LandingPage/>} />
-        {/* <GoogleOAuthProvider clientId ={""}>
-            <Route path="/Signin" element={<Signin/>} />
-        </GoogleOAuthProvider> */}
-       
         <Route path="/Signin" element={<Signin/>} />
         <Route path="/Signup" element={< Signup />} />
         <Route path="/MainPage" element={< MainPage />} />

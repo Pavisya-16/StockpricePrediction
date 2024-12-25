@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { FaUserGroup } from "react-icons/fa6";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SignInApi from '../api/SignInApi';
+import { ThemeProvider, ThemeToggle } from '@/components/ThemeProvider';
+import { GiTorch } from 'react-icons/gi';
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -27,37 +29,51 @@ const Signin = () => {
     }),
     onSubmit: async (values) => {
       try {
-        // Call the SignInApi function with the form values
-        const data = await SignInApi(values); 
-        console.log('Success:', data); // Log the successful response
+        const data = await SignInApi(values);
+        console.log('Success:', data);
         alert('SignIn successful!');
-        navigate('/MainPage'); // Navigate to MainPage on successful sign-in
+        navigate('/MainPage');
       } catch (error: any) {
-        // Handle any errors that occur during the sign-in process
-        console.error('Error:', error); // Log the error
-        alert(error.message); // Show the error message to the user
-      } 
+        console.error('Error:', error);
+        alert(error.message);
+      }
     },
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-200 via-gray-200 to-slate-300 shadow-lg">
+    <ThemeProvider>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+      
+      <div className="absolute top-4 left-4">
+        {/* Logo Section */}
+        <Link to="LandingPage">
+         <GiTorch  size={56} className=" mr-5  text-white bg-gradient-to-r  from-black via-blue-500 to-purple-500 p-3 rounded-full hover:text-black transition duration-300" /> 
+         </Link>
+      </div>
+
+
       {/* Main Container */}
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg border-b-slate-700 p-8 space-y-6 shadow-slate-800">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h2 className="flex justify-center items-center space-x-2">
+          <h2 className="flex justify-center items-center space-x-2 text-2xl font-bold">
             <FaUserGroup size={28} />
-            <span className="text-2xl font-bold text-gray-800">Sign In</span>
+            <span>Sign In</span>
           </h2>
-          <p className="text-sm text-gray-600">Welcome back! Please enter your details.</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Welcome back! Please enter your details.
+          </p>
         </div>
 
         {/* Form */}
         <form onSubmit={formik.handleSubmit} className="space-y-4">
           {/* Email */}
           <div>
-            <Label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <Label htmlFor="email" className="block text-sm font-medium">
               Email Address
             </Label>
             <Input
@@ -74,7 +90,7 @@ const Signin = () => {
 
           {/* Password */}
           <div>
-            <Label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <Label htmlFor="password" className="block text-sm font-medium">
               Password
             </Label>
             <Input
@@ -90,22 +106,27 @@ const Signin = () => {
           </div>
 
           {/* Submit Button */}
-          <Button className="w-full" type="submit" disabled={!formik.isValid || formik.isSubmitting}>
+          <Button
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            type="submit"
+            disabled={!formik.isValid || formik.isSubmitting}
+          >
             Sign In
           </Button>
         </form>
 
         {/* Footer */}
         <div className="text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Don't have an account?{' '}
-            <a href="/signup" className="text-blue-800 hover:underline">
+            <a href="/signup" className="text-blue-800 dark:text-blue-400 hover:underline">
               Sign up
             </a>
           </p>
         </div>
       </div>
     </div>
+    </ThemeProvider>
   );
 };
 
