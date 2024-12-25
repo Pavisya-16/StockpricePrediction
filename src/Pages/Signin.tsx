@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Input } from "@/components/ui/input";
@@ -17,12 +17,12 @@ const Signin = () => {
 
   const handleGoogleSuccess = (credentialResponse: any) => {
     if (credentialResponse.credential) {
-      const decodedToken: any = jwt_decode(credentialResponse.credential);
-      console.log('Google User Info:', decodedToken);
+      // const decodedToken: any = jwt_decode(credentialResponse.credential);
+      // console.log('Google User Info:', decodedToken);
 
       //Navigate to MainPage after successful login
-      alert(`Welcome, ${decodedToken.name}!`);
-      navigate('/MainPage');
+      // alert(`Welcome, ${decodedToken.name}!`);
+      // navigate('/MainPage');
     }
   };
 
