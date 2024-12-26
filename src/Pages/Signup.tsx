@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import SignUpApi from '@/api/SignUpApi';
 import { ThemeProvider, ThemeToggle } from '@/components/ThemeProvider';
 import { GiTorch } from 'react-icons/gi';
+import { Link } from 'lucide-react';
 
 const Signup = () => {
   const navigate = useNavigate();

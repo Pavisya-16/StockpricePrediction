@@ -28,8 +28,8 @@ const NavBar = () => {
   const [position, setPosition] = React.useState("bottom");
 
   return (
-    <header className=" shadow-md sticky top-0 z-50">
-      <div className="container flex flex-wrap items-center justify-between px-2 py-3 md:px-9 lg:px-24">
+    <header className=" shadow-md sticky ">
+      <div className=" flex flex-wrap items-center justify-between px-2 py-3 md:px-9 lg:px-5">
         {/* Logo Section */}
         <div className="flex items-center md:text-3xl font-semibold py-1 ">
         STOCK VISION
@@ -37,7 +37,7 @@ const NavBar = () => {
         </div>
 
         {/* Dropdown Menus */}
-        <div className="flex flex-wrap items-center space-x-5 md:space-x-3">
+        <div className="flex  space-x-2 md:space-x-3">
           {/* Elite Investments Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -89,7 +89,7 @@ const NavBar = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40">
-            <Link to="Signin">
+            <Link to="/Signin">
               <DropdownMenuItem>
                 Log In
                 <DropdownMenuShortcut>
@@ -98,7 +98,7 @@ const NavBar = () => {
               </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
-              <Link to="Signup">
+              <Link to="/Signup">
               <DropdownMenuItem>
                 Sign Up
                 <DropdownMenuShortcut>
