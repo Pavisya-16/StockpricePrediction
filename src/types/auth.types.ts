@@ -20,3 +20,22 @@ export interface SignInFormValues {
       [key: string]: any;
     };
   }
+
+
+
+export interface SignUpFormValues {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface SignUpResponse {
+  success: boolean;
+  message: string;
+  user?: {
+    id: string;
+    username: string;
+    email: string;
+    [key: string]: any;
+  };
+}

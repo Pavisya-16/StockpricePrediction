@@ -5,6 +5,8 @@ import Signup from './Pages/Signup';
 import MainPage from './Pages/MainPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
           <Route path="/Signin" element={<Signin />} />
           <Route path="/Signup" element={<Signup />} />
           <Route path="/MainPage" element={<MainPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </Router>
     </GoogleOAuthProvider>
