@@ -46,16 +46,16 @@ const ForgotPassword = () => {
           <ThemeToggle />
         </div>
 
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 border dark:border-gray-300 shadow-white rounded-2xl">
           <LogoExample size={16}/>
         </div>
 
         <div className="w-full max-w-md">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8  border dark:border-gray-300 shadow-white">
             <div className="text-center mb-8">
               <div className="flex justify-center mb-4">
-                <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
-                  <KeyRound className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <div className="p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
+                  <KeyRound className="h-8 w-8 text-white dark:text-black" />
                 </div>
               </div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Forgot Password?</h2>
@@ -64,7 +64,7 @@ const ForgotPassword = () => {
               </p>
             </div>
 
-            <form onSubmit={formik.handleSubmit} className="space-y-4">
+            <form onSubmit={formik.handleSubmit} className="space-y-4 ">
               <FormField
                 id="email"
                 label="Email"
@@ -72,6 +72,7 @@ const ForgotPassword = () => {
                 placeholder="Enter your email"
                 error={formik.errors.email}
                 touched={formik.touched.email}
+                classname="rounded-md border border-slate-600 dark:border-gray-400 mt-2"
                 {...formik.getFieldProps("email")}
               />
               <Button
@@ -86,7 +87,7 @@ const ForgotPassword = () => {
             <div className="mt-6 text-center">
               <Link
                 to="/signin"
-                className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-slate-100 dark:hover:text-blue-400"
               >
                 ← Back to Sign In
               </Link>

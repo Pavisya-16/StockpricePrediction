@@ -27,7 +27,7 @@ export const IconFormField = ({
   touched,
 }: IconFormFieldProps) => (
   <div>
-    <div className="flex items-center border-b-2 border-gray-300 dark:border-gray-600 py-2">
+    <div className="flex items-center border-b-2 border-slate-500 dark:border-gray-600 py-2">
       <Icon size={20} className="mr-3 text-gray-500 dark:text-gray-400" />
       <Input
         id={id}

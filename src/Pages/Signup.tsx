@@ -51,22 +51,26 @@ const SignUp = () => {
           <ThemeToggle />
         </div>
 
-        <div className="absolute top-7 left-4">
+        <div className="absolute top-7 left-4 border dark:border-gray-300 shadow-white rounded-2xl">
           <Link to="/LandingPage">
             <LogoExample size={16}/>
             </Link>
         </div>
 
-        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <div className="text-center mb-6">
-            <h2 className="flex justify-center items-center space-x-2 text-2xl font-semibold">
-              <FaUserPlus size={28} />
-              <span>Sign Up</span>
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Create an account to get started
-            </p>
-          </div>
+        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 top-1  border dark:border-gray-300 shadow-white">
+          {/* Header */}
+              <div className="text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 dark:bg-slate-100 border dark:border-gray-900">
+                    <FaUserPlus className="h-10 w-10 text-white dark:text-black" />
+                  </div>
+                </div>
+                <h2 className="text-2xl font-bold mt-0">Sign Up</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Create an account to get started!
+                </p>
+              </div>
+          
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             <IconFormField
@@ -117,7 +121,7 @@ const SignUp = () => {
             </Button>
           </form>
           <div className="flex items-center">
-            <hr className="flex-grow border-gray-300" />
+            <hr className="flex-grow border-gray-300 " />
             <span className="px-2 text-sm text-gray-500">or</span>
             <hr className="flex-grow border-gray-300" />
           </div>
@@ -130,7 +134,7 @@ const SignUp = () => {
 
           <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
             Already have an account?{' '}
-            <Link to="/Signin" className="text-blue-600 dark:text-blue-400 hover:underline">
+            <Link to="/Signin" className="text-blue-600 dark:text-slate-300 hover:underline">
               Log in
             </Link>
           </p>
