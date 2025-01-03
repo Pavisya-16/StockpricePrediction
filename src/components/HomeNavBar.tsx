@@ -1,57 +1,140 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { GiTorch } from 'react-icons/gi';
-import { CgProfile } from 'react-icons/cg';
-import { BiLogOutCircle } from 'react-icons/bi';
 import { Home, Link } from 'lucide-react';
-import { VscSearch } from 'react-icons/vsc';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import LogoExample from './Logo';
+import { fetchUserProfile } from '@/services/auth.service';
 
 const HomeNavBar = () => {
+  const [userProfile, setUserProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const getUserProfile = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const profile = await fetchUserProfile();
+
+        if (isMounted) {
+          setUserProfile(profile);
+          console.log('User profile fetched successfully:', profile);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setError(error.message || 'Failed to fetch user profile');
+          console.error('Error fetching user profile:', error);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    getUserProfile();
+
+    // Cleanup function to prevent state updates if component unmounts
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const getInitials = (name) => {
+    if (!name) return '';
+    const names = name.split(' ');
+    if (names.length >= 2) {
+      return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
+    }
+    return name[0].toUpperCase();
+  };
+
+  const ProfileIcon = () => {
+    if (isLoading) {
+      return (
+        <div className="w-12 h-12 rounded-full bg-gray-200 animate-pulse"></div>
+      );
+    }
+
+    if (!userProfile) {
+      return (
+        <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+          <span className="text-gray-500">?</span>
+        </div>
+      );
+    }
+
+    if (userProfile.picture) {
+      return (
+        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200">
+          <img 
+            src={userProfile.picture}
+            alt={userProfile.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-lg font-semibold border-2 border-gray-200">
+        {getInitials(userProfile.name)}
+      </div>
+    );
+  };
+
   return (
-    <>
-      {/* Navbar Section */}
-      <div className=" sticky">
-        <div className="flex flex-wrap items-center justify-between px-4 md:px-6 lg:px-10 py-2">
-        {/* Logo Section */}
-              <div className="flex items-center md:text-3xl font-semibold py-2 ">
-                <GiTorch  size={56} className=" mr-5  text-white bg-gradient-to-r  from-black via-blue-500 to-purple-500 p-3 rounded-full hover:text-black transition duration-300" /> 
-                  {/* Input Field with Search Icon */}
-                  <div className="relative w-fit">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="w-full bg-gray-100 text-gray-800 px-4 py-2 rounded-lg pl-12"
-                />
-                {/* Search Icon */}
-                <VscSearch
-                  size={20}
-                  className="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500"
-                />
-              </div>
-              </div>  
-              
+    <div className="shadow-md sticky">
+      <div className="flex flex-wrap items-center justify-between px-4 md:px-6 lg:px-10 py-2">
+        <LogoExample size={10} />
 
-          {/* Buttons Section */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            {/* Profile Dropdown */}
-            <Button
-              variant="outline"
-              className="bg-gradient-to-r from-black via-blue-500 to-purple-500 text-white px-3 py-2 font-medium text-xs sm:text-base md:text-lg flex items-center"
-            >
-              Your Profile <CgProfile size={20} className="ml-1" />
-            </Button>
-
-            {/* Logout Button */}
-            <Button
-              variant="outline"
-              className="text-slate-500 border-gray-300 px-3 py-2 font-light text-xs sm:text-base md:text-lg flex items-center"
-            >
-              Log Out <BiLogOutCircle size={20} className="ml-1" />
-            </Button>
-          </div>
+        <div className="flex items-center space-x-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative p-0 h-auto hover:bg-transparent">
+                <ProfileIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 mt-2">
+              {error ? (
+                <div className="p-2 text-sm text-red-500">
+                  {error}
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col space-y-1 p-2 border-b">
+                    <p className="text-sm font-medium leading-none">
+                      {isLoading ? 'Loading...' : userProfile?.name}
+                    </p>
+                    <p className="text-xs leading-none text-gray-500">
+                      {isLoading ? 'Loading...' : userProfile?.email}
+                    </p>
+                  </div>
+                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-gray-100">
+                    Profile Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-gray-100">
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-gray-100">
+                    Logout
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

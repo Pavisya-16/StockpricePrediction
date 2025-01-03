@@ -7,10 +7,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ForgotPassword from './Pages/ForgotPassword';
 import ResetPassword from './Pages/ResetPassword';
+import StockSearch from './Pages/StockSearch';
+import SearchMain from './Pages/SearchMain';
 
 const App = () => {
   return (
-    <GoogleOAuthProvider clientId="277686266990-aoreajgo5kblj2e0npl3hbjr59j6grdk.apps.googleusercontent.com">
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -20,9 +21,9 @@ const App = () => {
           <Route path="/MainPage" element={<MainPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/search" element={<SearchMain />} />
         </Routes>
       </Router>
-    </GoogleOAuthProvider>
   );
 };
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import qs from 'qs'; 
+import axiosInstance from '../api/axios';
 
 import { GoogleCredentialResponse, AuthResponse, SignInFormValues, SignUpFormValues, SignUpResponse } from "@/types/auth.types";
 
@@ -63,3 +64,15 @@ export const SignUpApi = async (values: SignUpFormValues): Promise<SignUpRespons
     });
     return response.data;
   };
+
+  
+
+export const fetchUserProfile = async () => {
+  try {
+    const response = await axiosInstance.get(`${import.meta.env.VITE_Dev_URL}/auth/me`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    throw error; // Re-throw the error to handle it in the calling component
+  }
+};
