@@ -107,22 +107,22 @@ const Visualization = () => {
 
   return (
     <>
-      {/* Search Input Section */}
+      {/* Search Input Section 
       <div className="container mx-auto py-4 px-4 sm:px-6 md:px-8 lg:px-12">
-        <div className="relative flex flex-row items-center space-x-2">
-          {/* Input Field with Search Icon */}
+        {/* <div className="relative flex flex-row items-center space-x-2">
+          {/* Input Field with Search Icon 
           <input
             type="text"
             placeholder="Search"
             className="w-full sm:w-2/3 md:w-1/2 lg:w-2/3 bg-gray-100 text-gray-800 px-4 py-2 rounded-lg pl-10"
           />
-          {/* Search Icon */}
+          {/* Search Icon 
           <VscSearch
             size={26}
             className="absolute right-18 text-gray-500"
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Main Content Section */}
       <div className="container mx-1 px-4 sm:px-6 md:px-8 lg:px-12 py-6">

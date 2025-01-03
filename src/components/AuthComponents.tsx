@@ -35,14 +35,14 @@ export const FormField = ({
   ...props 
 }: FormFieldProps) => (
   <div>
-    <Label htmlFor={id} className="block text-sm font-medium">
+    <Label htmlFor={id} className="block text-sm font-medium ">
       {label}
     </Label>
     <Input
       id={id}
       type={type}
       placeholder={placeholder}
-      className={`mt-1 w-full ${touched && error ? "border-red-600" : ""}`}
+      className={`mt-1 w-full  border border-slate-600 dark:border-gray-400 mt-2${touched && error ? "border-red-600" : ""}`}
       {...props}
     />
     {touched && error && (

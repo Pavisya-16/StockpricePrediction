@@ -12,7 +12,7 @@ const FooterBar = () => {
           {/* Email Icon and Text */}
           <div className="flex  space-x-2">
             <CiMail size={20} />
-            <span className="font-extralight">StockVision@prediction.com</span>
+            <span className="font-extralight">StockVisionprediction@gmail.com</span>
           </div>
           {/* Address Icon and Text */}
           <div className="flex space-x-2">
