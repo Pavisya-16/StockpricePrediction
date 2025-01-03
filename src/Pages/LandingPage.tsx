@@ -3,6 +3,8 @@ import FooterBar from '@/components/FooterBar'
 import NavBar from '@/components/NavBar'
 import StockForecastCard from '@/components/StockForecastCard'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import StockDashboard from './StockDashboard'
+import StockWebSocket from './StockWebSocket'
 
 
 const LandingPage = () => {
@@ -18,6 +20,7 @@ const LandingPage = () => {
       {/* Main Content Section */}
       <section className="flex-1">
         <CarouselBar />
+        {/* <StockDashboard/> */}
         <StockForecastCard />
       </section>
 
