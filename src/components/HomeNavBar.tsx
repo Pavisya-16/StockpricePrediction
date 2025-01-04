@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { GiTorch } from 'react-icons/gi';
-import { Home, Link } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +14,7 @@ const HomeNavBar = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let isMounted = true;
@@ -43,7 +43,6 @@ const HomeNavBar = () => {
 
     getUserProfile();
 
-    // Cleanup function to prevent state updates if component unmounts
     return () => {
       isMounted = false;
     };
@@ -56,6 +55,12 @@ const HomeNavBar = () => {
       return `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase();
     }
     return name[0].toUpperCase();
+  };
+
+  const logout = () => {
+    localStorage.removeItem('accessToken'); // Remove the authentication token
+    localStorage.removeItem('user'); // Remove the authentication token
+    navigate('/Signin'); // Redirect to the Signin page
   };
 
   const ProfileIcon = () => {
@@ -76,7 +81,7 @@ const HomeNavBar = () => {
     if (userProfile.picture) {
       return (
         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200">
-          <img 
+          <img
             src={userProfile.picture}
             alt={userProfile.name}
             className="w-full h-full object-cover"
@@ -125,7 +130,10 @@ const HomeNavBar = () => {
                   <DropdownMenuItem className="py-2 cursor-pointer hover:bg-gray-100">
                     Dashboard
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-gray-100">
+                  <DropdownMenuItem
+                    onClick={logout}
+                    className="py-2 cursor-pointer hover:bg-gray-100 text-red-500"
+                  >
                     Logout
                   </DropdownMenuItem>
                 </>

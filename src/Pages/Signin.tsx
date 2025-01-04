@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import { useToast } from "@/utility-components/CustomToast";
 import { FaUserGroup } from "react-icons/fa6";
-import {  FormField, GoogleSignIn } from "@/components/AuthComponents";
+import { FormField, GoogleSignIn } from "@/components/AuthComponents";
 import axiosInstance from "../api/axios";
-import LogoExample from '@/components/Logo';
-
+import LogoExample from "@/components/Logo";
+import { useDispatch } from 'react-redux';
+import { login } from '../Redux/authSlice';
 
 import {
   SIGN_IN_VALIDATION_SCHEMA,
@@ -21,19 +22,25 @@ import {
 import { GoogleCredentialResponse } from "@/types/auth.types";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
   const toast = useToast();
   const navigate = useNavigate();
 
   // Handle Google Sign-In success
-  const handleGoogleSuccess = async (credentialResponse: GoogleCredentialResponse) => {
+  const handleGoogleSuccess = async (
+    credentialResponse: GoogleCredentialResponse
+  ) => {
     try {
       const data = await googleSignIn(credentialResponse);
       storeAuthData(data);
+      dispatch(login(data.access_token));
       toast.success("Sign in successful!", { duration: 3000 });
       navigate("/search");
     } catch (error: any) {
       console.error("Authentication error:", error);
-      toast.error(error.response?.data?.message || "Failed to sign in with Google");
+      toast.error(
+        error.response?.data?.message || "Failed to sign in with Google"
+      );
     }
   };
 
@@ -61,11 +68,12 @@ const SignIn = () => {
             picture: userResponse?.data.picture,
           },
         };
-// console.log("userData",userData);
-localStorage.setItem("accessToken", userData.access_token);
-localStorage.setItem("user", JSON.stringify(userData.user));
+        // console.log("userData",userData);
+        localStorage.setItem("accessToken", userData.access_token);
+        localStorage.setItem("user", JSON.stringify(userData.user));
         // storeAuthData(userData);
         toast.success("Sign in successful!");
+        dispatch(login(userData.access_token));
         if (userResponse.status === 200) navigate("/search");
       } catch (error: any) {
         console.error("Sign-in error:", error);
@@ -88,7 +96,10 @@ localStorage.setItem("user", JSON.stringify(userData.user));
         <div className="text-center">
           <div className="flex justify-center mb-4">
             <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
-              <FaUserGroup className="h-8 w-8 text-blue-600 dark:text-blue-400" size={28} />
+              <FaUserGroup
+                className="h-8 w-8 text-blue-600 dark:text-blue-400"
+                size={28}
+              />
             </div>
           </div>
           <h2 className="text-2xl font-bold">Sign In</h2>
@@ -146,7 +157,9 @@ localStorage.setItem("user", JSON.stringify(userData.user));
 
         <GoogleSignIn
           onSuccess={handleGoogleSuccess}
-          onError={() => toast.error("Google sign in failed. Please try again.")}
+          onError={() =>
+            toast.error("Google sign in failed. Please try again.")
+          }
         />
 
         <div className="text-center">
