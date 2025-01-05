@@ -1,33 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import axiosInstance from '../api/axios';
+import axiosInstance from '@/api/axios';
 
-const StockSearch = () => {
+const StockSearch = ({ onSelect }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState(null);
   const searchRef = useRef(null);
-  const navigate = useNavigate();
+
+  // Function to fetch search results
+  const fetchSearchResults = async (query) => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const { data } = await axiosInstance.get(`/stocks/search/${query}`);
+      setSearchResults(data.companies || []);
+      setShowResults(true);
+    } catch (err) {
+      setError(err.response?.data?.detail || 'An error occurred');
+      setSearchResults([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const timer = setTimeout(async () => {
+    const timer = setTimeout(() => {
       if (searchTerm.length >= 3) {
-        setIsLoading(true);
-        setError(null);
-        
-        try {
-          const { data } = await axiosInstance.get(`/stocks/search/${searchTerm}`);
-          setSearchResults(data.companies || []);
-          setShowResults(true);
-        } catch (err) {
-          setError(err.response?.data?.detail || 'An error occurred');
-          setSearchResults([]);
-        } finally {
-          setIsLoading(false);
-        }
+        fetchSearchResults(searchTerm);
       } else {
         setSearchResults([]);
         setShowResults(false);
@@ -49,25 +52,40 @@ const StockSearch = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    if (value.length < 3) {
+      setShowResults(false);
+    }
+  };
+
   const handleSelectCompany = (company) => {
     setSearchTerm(company.name);
     setShowResults(false);
+    if (onSelect) {
+      onSelect(company);
+    }
+  };
 
-    // Navigate to the company details page
-    navigate(`/stocks/${company.symbol}`, { state: { company } });
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && searchTerm.length >= 3) {
+      e.preventDefault();
+      fetchSearchResults(searchTerm);
+    }
   };
 
   return (
     <div className="max-w-2xl mx-auto p-4" ref={searchRef}>
       <div className="relative">
-        {/* Search Input */}
         <div className="relative">
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search for a company"
-            className="w-full px-4 py-3 pl-12 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Enter minimum 3 characters to search"
+            className="w-full px-4 py-3 pl-12 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-200"
           />
           <Search 
             className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" 
@@ -80,20 +98,25 @@ const StockSearch = () => {
           )}
         </div>
 
-        {/* Error Message */}
+        {/* Character count indicator */}
+        {searchTerm.length > 0 && searchTerm.length < 3 && (
+          <div className="absolute right-4 -bottom-6 text-sm text-gray-500">
+            Enter {3 - searchTerm.length} more character{3 - searchTerm.length !== 1 ? 's' : ''}
+          </div>
+        )}
+
         {error && (
           <div className="absolute w-full mt-1 bg-red-50 border border-red-200 rounded-lg p-3 text-red-600">
             {error}
           </div>
         )}
 
-        {/* Search Results */}
         {showResults && searchResults.length > 0 && !error && (
           <div className="absolute w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
             {searchResults.map((company) => (
               <div
                 key={company.symbol}
-                className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b last:border-b-0 transition-colors duration-200"
                 onClick={() => handleSelectCompany(company)}
               >
                 <div className="flex justify-between items-center">
@@ -111,11 +134,6 @@ const StockSearch = () => {
                           maximumFractionDigits: 2 
                         })}
                       </div>
-                      {company.day_high && company.day_low && (
-                        <div className="text-xs text-gray-500">
-                          {company.day_low} - {company.day_high}
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>
@@ -124,7 +142,6 @@ const StockSearch = () => {
           </div>
         )}
 
-        {/* No Results */}
         {showResults && searchTerm.length >= 3 && searchResults.length === 0 && !isLoading && !error && (
           <div className="absolute w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
             <div className="px-4 py-3 text-gray-500 text-center">
