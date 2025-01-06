@@ -76,6 +76,7 @@ const StockSearch = ({ onSelect }) => {
   };
 
   return (
+    <>
     <div className="max-w-2xl mx-auto p-4" ref={searchRef}>
       <div className="relative">
         <div className="relative">
@@ -85,22 +86,22 @@ const StockSearch = ({ onSelect }) => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="Enter minimum 3 characters to search"
-            className="w-full px-4 py-3 pl-12 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-200"
+            className="w-full px-4 py-3 pl-12 text-indigo-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors duration-200  dark:border-gray-300 shadow-white dark:bg-slate-200 "
           />
           <Search 
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" 
-            size={20} 
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-indigo-700 dark:border-gray-300  " 
+            size={30} 
           />
           {isLoading && (
             <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-red-500"></div>
             </div>
           )}
         </div>
 
         {/* Character count indicator */}
         {searchTerm.length > 0 && searchTerm.length < 3 && (
-          <div className="absolute right-4 -bottom-6 text-sm text-gray-500">
+          <div className="absolute right-4 -bottom-6 text-sm text-gray-500 dark:text-slate-100 ">
             Enter {3 - searchTerm.length} more character{3 - searchTerm.length !== 1 ? 's' : ''}
           </div>
         )}
@@ -151,6 +152,7 @@ const StockSearch = ({ onSelect }) => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

@@ -115,9 +115,11 @@ const NavBar = () => {
         <div className="flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center flex-shrink-0 space-x-2">
-          <LogoExample className="max-h-32" />
-          <h1 className="text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-tr from-blue-800 via-slate-950 to-indigo-600 dark:bg-gradient-to-r dark:from-violet-500 dark:via-black dark:via-white dark:to-blue-500 drop-shadow-lg">
-          STOCK<span className="text-4xl">`</span>VISION
+          <LogoExample className="border dark:border-gray-300 max-h-32 " />
+          {/* <h1 className="text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-tr from-blue-800 via-slate-950 to-indigo-600 dark:bg-gradient-to-r dark:from-violet-500 dark:via-black dark:via-white dark:to-blue-500 drop-shadow-lg">
+          STOCK<span className="text-4xl">`</span>VISION */}
+          <h1 className="text-2xl md:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-tr from-blue-800 via-slate-950 to-indigo-600 dark:bg-gradient-to-r dark:from-violet-500 dark:via-black dark:via-white dark:to-blue-500">
+          STOCK<span className="text-5xl text-slate-600 dark:text-white font-extrabold">V</span>ISION
         </h1>
         </div>
                 

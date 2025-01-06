@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import img from '../assets/logo.webp'
 const LogoExample = ({ className }) => {
   return (
-    <Link to="/" className="block">
+    <Link to="/" className="block border dark:border-gray-300 rounded-2xl">
       <img
         src={img}
         alt="StockVision Logo"

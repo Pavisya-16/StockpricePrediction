@@ -8,7 +8,7 @@ const TruncatedText = ({ text, maxLines = 3 }) => {
   return (
     <div>
       <div
-        className={`text-sm text-gray-700 leading-relaxed relative ${
+        className={`text-sm text-gray-700 dark:text-gray-400 dark:opacity-2  leading-relaxed relative ${
           !isExpanded ? 'line-clamp-3' : ''
         }`}
       >
@@ -16,7 +16,7 @@ const TruncatedText = ({ text, maxLines = 3 }) => {
       </div>
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="mt-2 flex items-center text-sm text-blue-600 hover:text-blue-800 font-medium"
+        className="mt-2 flex items-center text-sm text-blue-600 hover:text-blue-800 font-medium dark:text-white "
       >
         {isExpanded ? (
           <>
