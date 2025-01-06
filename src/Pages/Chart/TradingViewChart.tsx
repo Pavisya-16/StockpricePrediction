@@ -21,12 +21,55 @@ const TradingViewChart = ({CName}) => {
     { label: '1 Month', value: '1mo' }
   ];
 
+  const parseDate = (dateStr) => {
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return null;
+      return {
+        time: dateStr,
+        timestamp: date.getTime()
+      };
+    } catch {
+      return null;
+    }
+  };
+
+  const parseSignalPoints = (pointsStr, isBuy = true) => {
+    if (!pointsStr) return [];
+    
+    return pointsStr.split('\n')
+      .map(point => {
+        try {
+          const [date, price] = point.split(': ');
+          const parsedDate = parseDate(date);
+          if (!parsedDate) return null;
+
+          return {
+            time: parsedDate.time,
+            position: isBuy ? 'belowBar' : 'aboveBar',
+            color: isBuy ? '#22c55e' : '#ef4444',
+            shape: isBuy ? 'arrowUp' : 'arrowDown',
+            text: isBuy ? 'BUY' : 'SELL',
+            size: 2,
+            timestamp: parsedDate.timestamp
+          };
+        } catch {
+          return null;
+        }
+      })
+      .filter(point => point !== null);
+  };
+
   useEffect(() => {
     const loadChartData = async () => {
       try {
         setLoading(true);
         const result = await fetchStockCharts(CName, interval);
-        setData(result.data);
+        if (Array.isArray(result.data) && result.data.length > 0) {
+          setData(result.data);
+        } else {
+          setError('No data available');
+        }
       } catch (error) {
         setError('Failed to fetch chart data');
         console.error('Chart data error:', error);
@@ -42,10 +85,12 @@ const TradingViewChart = ({CName}) => {
     setAnalyzing(true);
     try {
       const analysisData = await analyzeStock(CName, interval);
+      if (!analysisData) throw new Error('No analysis data received');
+      
       setAnalysis(analysisData);
       setSupportLevel(analysisData.support_level);
       setResistanceLevel(analysisData.resistance_level);
-      setTradingSignals(analysisData.trading_signals);
+      setTradingSignals(analysisData.trading_signals || {});
     } catch (error) {
       setError('Failed to analyze stock');
       console.error('Analysis error:', error);
@@ -55,9 +100,8 @@ const TradingViewChart = ({CName}) => {
   };
 
   useEffect(() => {
-    if (!chartContainerRef.current || loading || error) return;
+    if (!chartContainerRef.current || loading || error || !data.length) return;
 
-    // Create the chart
     chart.current = createChart(chartContainerRef.current, {
       layout: {
         background: { color: '#ffffff' },
@@ -87,7 +131,6 @@ const TradingViewChart = ({CName}) => {
       },
     });
 
-    // Add candlestick series
     const candlestickSeries = chart.current.addCandlestickSeries({
       upColor: '#22c55e',
       downColor: '#ef4444',
@@ -97,38 +140,22 @@ const TradingViewChart = ({CName}) => {
       wickDownColor: '#ef4444',
     });
 
-    // Set the candlestick data
     candlestickSeries.setData(data);
 
-    // Add markers for buy and sell points
     if (tradingSignals.signals) {
-      const parsePoints = (pointsStr, isBuy = true) => 
-        pointsStr?.split('\n')
-          .map(point => {
-            const [date, price] = point.split(': ');
-            return {
-              time: date,
-              position: isBuy ? 'belowBar' : 'aboveBar',
-              color: isBuy ? '#22c55e' : '#ef4444',
-              shape: isBuy ? 'arrowUp' : 'arrowDown',
-              text: isBuy ? 'BUY' : 'SELL',
-              size: 2,
-              timestamp: new Date(date).getTime()
-            };
-          }) || [];
-
-      const buyPoints = parsePoints(tradingSignals.buy_points, true);
-      const sellPoints = parsePoints(tradingSignals.sell_points, false);
+      const buyPoints = parseSignalPoints(tradingSignals.buy_points, true);
+      const sellPoints = parseSignalPoints(tradingSignals.sell_points, false);
       
       const allMarkers = [...buyPoints, ...sellPoints]
         .sort((a, b) => a.timestamp - b.timestamp)
         .map(({timestamp, ...marker}) => marker);
 
-      candlestickSeries.setMarkers(allMarkers);
+      if (allMarkers.length > 0) {
+        candlestickSeries.setMarkers(allMarkers);
+      }
     }
 
-    if (supportLevel) {
-      // Add support line
+    if (supportLevel && !isNaN(supportLevel)) {
       const supportSeries = chart.current.addLineSeries({
         color: '#22c55e',
         lineWidth: 2,
@@ -142,8 +169,7 @@ const TradingViewChart = ({CName}) => {
       supportSeries.setData(supportData);
     }
 
-    if (resistanceLevel) {
-      // Add resistance line
+    if (resistanceLevel && !isNaN(resistanceLevel)) {
       const resistanceSeries = chart.current.addLineSeries({
         color: '#ef4444',
         lineWidth: 2,
@@ -157,16 +183,31 @@ const TradingViewChart = ({CName}) => {
       resistanceSeries.setData(resistanceData);
     }
 
-    // Fit content
     chart.current.timeScale().fitContent();
 
-    // Cleanup
     return () => {
       if (chart.current) {
         chart.current.remove();
       }
     };
   }, [data, loading, error, supportLevel, resistanceLevel, tradingSignals]);
+
+  const renderTradingSignals = () => {
+    if (!tradingSignals.signals) return null;
+    
+    const signals = tradingSignals.signals.split('\n')
+      .filter(signal => signal && signal.includes(': '))
+      .map((signal) => {
+        const [date, value] = signal.split(': ');
+        return (
+          <p key={date} className="text-sm">
+            {date}: <span className="font-medium uppercase">{value}</span>
+          </p>
+        );
+      });
+
+    return signals.length > 0 ? signals : <p className="text-sm text-gray-500">No recent signals</p>;
+  };
 
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
@@ -214,14 +255,7 @@ const TradingViewChart = ({CName}) => {
               <div>
                 <p className="text-sm font-medium mb-1">Trading Signals:</p>
                 <div className="space-y-1">
-                  {tradingSignals.signals?.split('\n').map((signal) => {
-                    const [date, value] = signal.split(': ');
-                    return (
-                      <p key={date} className="text-sm">
-                        {date}: <span className="font-medium uppercase">{value}</span>
-                      </p>
-                    );
-                  })}
+                  {renderTradingSignals()}
                 </div>
               </div>
             </div>
