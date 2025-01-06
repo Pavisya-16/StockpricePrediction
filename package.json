@@ -30,6 +30,7 @@
     "formik": "^2.4.6",
     "framer-motion": "^11.15.0",
     "jwt-decode": "^4.0.0",
+    "lightweight-charts": "^4.2.2",
     "lucide-react": "^0.468.0",
     "qs": "^6.13.1",
     "react": "^18.3.1",
