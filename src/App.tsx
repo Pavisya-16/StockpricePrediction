@@ -8,37 +8,41 @@ import ResetPassword from './Pages/ResetPassword';
 import SearchMain from './Pages/SearchMain';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
+import { AuthRedirect } from "./Pages/AuthRedirect";
 
 
 const App = () => {
     return (
         <Router>
             <Routes>
-                {/* Public Routes */}
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/LandingPage" element={<LandingPage />} />
-                <Route path="/Signin" element={<Signin />} />
-                <Route path="/Signup" element={<Signup />} />
+                
+                {/* Wrap auth routes with AuthRedirect */}
+                <Route path="/Signin" element={
+                    <AuthRedirect>
+                        <Signin />
+                    </AuthRedirect>
+                } />
+                <Route path="/Signup" element={
+                    <AuthRedirect>
+                        <Signup />
+                    </AuthRedirect>
+                } />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
 
                 {/* Protected Routes */}
-                <Route
-                    path="/MainPage"
-                    element={
-                        <ProtectedRoute>
-                            <MainPage />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/search"
-                    element={
-                        <ProtectedRoute>
-                            <SearchMain />
-                        </ProtectedRoute>
-                    }
-                />
+                <Route path="/MainPage" element={
+                    <ProtectedRoute>
+                        <MainPage />
+                    </ProtectedRoute>
+                } />
+                <Route path="/search" element={
+                    <ProtectedRoute>
+                        <SearchMain />
+                    </ProtectedRoute>
+                } />
             </Routes>
         </Router>
     );
