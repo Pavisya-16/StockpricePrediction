@@ -12,9 +12,9 @@ createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
   <ThemeProvider>
   <ToastProvider>
-  <StrictMode>
+  {/* <StrictMode> */}
     <App />
-  </StrictMode>,
+  {/* </StrictMode>, */}
   </ToastProvider>
   </ThemeProvider>
   </Provider>

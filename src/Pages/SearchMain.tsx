@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import StockSearch from "./StockSearch";
 import HomeNavBar from "@/components/HomeNavBar";
 import StockDashboard from "./StockDashboard";
-import { fetchStockInfo } from "@/services/stock.service";
+import { fetchStockChart, fetchStockInfo } from "@/services/stock.service";
 import { Card, CardContent } from "@/components/ui/card";
 import FooterBar from "@/components/FooterBar";
 import stock1 from '../assets/Bitcoin.png';
@@ -10,6 +10,8 @@ import stock2 from '../assets/Finance Analysis.png';
 import stock3 from '../assets/Investing 2.png';
 import stock4 from '../assets/Bitcoin 2.png';
 import { DollarSign } from "lucide-react";
+import CandlestickChart from "./Chart/TradingViewChart";
+import TradingViewChart from "./Chart/TradingViewChart";
 
 export default function SearchMain() {
   const [state, setState] = useState({
@@ -17,6 +19,7 @@ export default function SearchMain() {
     loading: false,
     error: null
   });
+  const [companyname ,SetcompanyName] = useState("")
 
   const handleStockSelect = async (company) => {
     if (!company?.symbol) return;
@@ -29,7 +32,11 @@ export default function SearchMain() {
 
     try {
       const cleanSymbol = company.symbol.replace('.NS', '');
+      SetcompanyName(cleanSymbol)
+      console.log("cleanSymbol",cleanSymbol);
+      
       const data = await fetchStockInfo(cleanSymbol);
+      
       setState({
         stockData: data,
         loading: false,
@@ -150,6 +157,7 @@ export default function SearchMain() {
           {!loading && !error && stockData && (
             <div className="mt-6">
               <StockDashboard data={stockData} />
+              <TradingViewChart CName={companyname} />
             </div>
           )}
         </div>

@@ -39,7 +39,6 @@ const App = () => {
                         </ProtectedRoute>
                     }
                 />
-                {/* Add other protected routes as needed */}
             </Routes>
         </Router>
     );
