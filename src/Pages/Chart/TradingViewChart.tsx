@@ -27,8 +27,6 @@ const TradingViewChart = ({CName}) => {
         setLoading(true);
         const result = await fetchStockCharts(CName, interval);
         setData(result.data);
-        // You can also use the metadata if needed
-        // setMetadata(result.metadata);
       } catch (error) {
         setError('Failed to fetch chart data');
         console.error('Chart data error:', error);
@@ -38,13 +36,12 @@ const TradingViewChart = ({CName}) => {
     };
   
     loadChartData();
-  }, [CName, interval]);// Refetch when interval changes
+  }, [CName, interval]);
 
   const handleAnalyze = async () => {
     setAnalyzing(true);
     try {
       const analysisData = await analyzeStock(CName, interval);
-      
       setAnalysis(analysisData);
       setSupportLevel(analysisData.support_level);
       setResistanceLevel(analysisData.resistance_level);
@@ -100,8 +97,35 @@ const TradingViewChart = ({CName}) => {
       wickDownColor: '#ef4444',
     });
 
-    // Set the data
+    // Set the candlestick data
     candlestickSeries.setData(data);
+
+    // Add markers for buy and sell points
+    if (tradingSignals.signals) {
+      const parsePoints = (pointsStr, isBuy = true) => 
+        pointsStr?.split('\n')
+          .map(point => {
+            const [date, price] = point.split(': ');
+            return {
+              time: date,
+              position: isBuy ? 'belowBar' : 'aboveBar',
+              color: isBuy ? '#22c55e' : '#ef4444',
+              shape: isBuy ? 'arrowUp' : 'arrowDown',
+              text: isBuy ? 'BUY' : 'SELL',
+              size: 2,
+              timestamp: new Date(date).getTime()
+            };
+          }) || [];
+
+      const buyPoints = parsePoints(tradingSignals.buy_points, true);
+      const sellPoints = parsePoints(tradingSignals.sell_points, false);
+      
+      const allMarkers = [...buyPoints, ...sellPoints]
+        .sort((a, b) => a.timestamp - b.timestamp)
+        .map(({timestamp, ...marker}) => marker);
+
+      candlestickSeries.setMarkers(allMarkers);
+    }
 
     if (supportLevel) {
       // Add support line
@@ -142,7 +166,7 @@ const TradingViewChart = ({CName}) => {
         chart.current.remove();
       }
     };
-  }, [data, loading, error, supportLevel, resistanceLevel]);
+  }, [data, loading, error, supportLevel, resistanceLevel, tradingSignals]);
 
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
@@ -190,11 +214,14 @@ const TradingViewChart = ({CName}) => {
               <div>
                 <p className="text-sm font-medium mb-1">Trading Signals:</p>
                 <div className="space-y-1">
-                  {Object.entries(tradingSignals).map(([date, signal]) => (
-                    <p key={date} className="text-sm">
-                      {date}: <span className="font-medium uppercase">{signal}</span>
-                    </p>
-                  ))}
+                  {tradingSignals.signals?.split('\n').map((signal) => {
+                    const [date, value] = signal.split(': ');
+                    return (
+                      <p key={date} className="text-sm">
+                        {date}: <span className="font-medium uppercase">{value}</span>
+                      </p>
+                    );
+                  })}
                 </div>
               </div>
             </div>

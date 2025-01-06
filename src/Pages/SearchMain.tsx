@@ -21,7 +21,7 @@ export default function SearchMain() {
   });
   const [companyname ,SetcompanyName] = useState("")
 
-  const handleStockSelect = async (company) => {
+  const handleStockSelect = async (company:string) => {
     if (!company?.symbol) return;
 
     setState(prev => ({
