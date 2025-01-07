@@ -51,7 +51,7 @@ const DonutChart = ({ value, maxValue, label, color }) => {
         </motion.div>
       </div>
       <motion.span
-        className="mt-2 text-sm font-medium text-gray-600 group-hover:text-sky-700 dark:group-hover:text-teal-200 transition-colors"
+        className="mt-2 text-sm font-medium text-gray-700 group-hover:text-sky-700 dark:group-hover:text-teal-200  dark:text-slate-300 transition-colors"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}

@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { analyzeStock, fetchStockCharts } from '@/services/stock.service';
+import { FaCalendarAlt, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { GiTakeMyMoney } from "react-icons/gi";
+import { GiMicroscopeLens } from "react-icons/gi";
+
 
 const TradingViewChart = ({CName}) => {
   const chartContainerRef = useRef();
@@ -192,22 +196,68 @@ const TradingViewChart = ({CName}) => {
     };
   }, [data, loading, error, supportLevel, resistanceLevel, tradingSignals]);
 
-  const renderTradingSignals = () => {
-    if (!tradingSignals.signals) return null;
-    
-    const signals = tradingSignals.signals.split('\n')
-      .filter(signal => signal && signal.includes(': '))
-      .map((signal) => {
-        const [date, value] = signal.split(': ');
-        return (
-          <p key={date} className="text-sm">
-            {date}: <span className="font-medium uppercase">{value}</span>
-          </p>
-        );
-      });
 
-    return signals.length > 0 ? signals : <p className="text-sm text-gray-500">No recent signals</p>;
-  };
+// const renderTradingSignals = () => {
+//   if (!tradingSignals.signals) return null;
+  
+//   const signals = tradingSignals.signals.split('\n')
+//     .filter(signal => signal && signal.includes(': '))
+//     .map((signal, index) => {
+//       const [date, value] = signal.split(': ');
+//       const isBuySignal = value.toLowerCase() === 'buy'; // Check if it's a Buy or Sell signal
+//       const isSellSignal = value.toLowerCase() === 'sell'; // Check if it's a Sell signal
+
+//       return (
+//         <div key={index} className={`group p-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 ${isBuySignal ? 'bg-green-50 dark:bg-green-800' : isSellSignal ? 'bg-red-50 dark:bg-red-800' : 'bg-gray-50 dark:bg-gray-800'}`}>
+//           <div className="flex items-center space-x-2">
+//             <FaCalendarAlt className="text-gray-500 dark:text-gray-400" />
+//             <p className="text-sm text-gray-900 dark:text-gray-100">{date}</p>
+//           </div>
+//           <p className={`text-sm text-gray-900 dark:text-gray-100`}>
+//             {isBuySignal && <FaArrowUp className="inline-block text-green-600 dark:text-green-400 mr-1" />}
+//             {isSellSignal && <FaArrowDown className="inline-block text-red-600 dark:text-red-400 mr-1" />}
+//             <span className={`font-medium uppercase ${isBuySignal ? 'text-green-600 dark:text-green-400' : isSellSignal ? 'text-red-600 dark:text-red-400' : 'text-gray-700 dark:text-gray-300'}`}>{value}</span>
+//           </p>
+//         </div>
+//       );
+//     });
+
+//   return signals.length > 0 
+//     ? signals 
+//     : <div className="group bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105">
+//         <p className="text-sm text-gray-500 dark:text-gray-400">No recent signals</p>
+//       </div>;
+// };
+const renderTradingSignals = () => {
+  if (!tradingSignals.signals) return null;
+  
+  const signals = tradingSignals.signals.split('\n')
+    .filter(signal => signal && signal.includes(': '))
+    .map((signal, index) => {
+      const [date, value] = signal.split(': ');
+      const isBuySignal = value.toLowerCase() === 'buy'; // Determine if it's a Buy or Sell signal
+
+      return (
+        <div key={index} className={`group p-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 ${isBuySignal ? 'bg-green-50 dark:bg-green-800' : 'bg-red-50 dark:bg-red-800'}`}>
+          
+          <div className="flex items-center space-x-2">
+           <FaCalendarAlt className="text-gray-500 dark:text-gray-400" />
+            <p className="text-sm text-gray-900 dark:text-gray-100">{date}</p>
+         </div>
+          <p className={`text-sm text-gray-900 dark:text-gray-100`}>
+            <span className={`font-medium uppercase ${isBuySignal ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-300'}`}>{value}</span>
+          </p>
+        </div>
+      );
+    });
+
+  return signals.length > 0 
+    ? signals 
+    : <div className="group bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105">
+        <p className="text-sm text-gray-500 dark:text-gray-400">No recent signals</p>
+      </div>;
+};
+
 
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
@@ -223,8 +273,8 @@ const TradingViewChart = ({CName}) => {
                 onClick={() => setInterval(tf.value)}
                 className={`px-3 py-1 rounded-md text-sm font-medium ${
                   interval === tf.value
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                   ? 'bg-gray-600 text-white hover:bg-slate-700 dark:bg-gray-400 dark:text-black dark:hover:bg-gray-500'
+                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
                 }`}
               >
                 {tf.label}
@@ -232,34 +282,82 @@ const TradingViewChart = ({CName}) => {
             ))}
           </div>
           <div className="flex items-end">
-            <button
-              onClick={handleAnalyze}
-              disabled={analyzing}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-            >
+          <button
+          onClick={handleAnalyze}
+          disabled={analyzing}
+          className="px-4 py-2 rounded-md 
+             bg-indigo-600 text-white hover:bg-teal-300 
+             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+             dark:bg-teal-400 dark:text-gray-900 dark:hover:bg-gray-400 
+             dark:focus:ring-blue-400 dark:focus:ring-offset-gray-800 
+             disabled:opacity-50"
+>
               {analyzing ? 'Analyzing...' : 'Analyze Stock'}
             </button>
           </div>
         </div>
 
         {analysis && (
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="text-lg font-medium mb-2">Analysis Results</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-white dark:bg-gray-800 shadow-sm border-t-4 border-t-amber-500">
+          {/* Left Cardlet */}
+          <div className="group bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 p-6 rounded-lg shadow-md transition-all hover:shadow-lg">
+            <h3 className="text-lg font-medium mb-4 text-gray-100 dark:text-gray-100 gap-2 flex items-center">
+            <GiMicroscopeLens className="h-12 w-12 p-2 inline-block ml-2 text-cyan-700 rounded-full bg-slate-100 dark:bg-slate-700 transform rotate-12 dark:text-white" />
+              Analysis Overview
+            </h3>
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600">Model Accuracy: {(analysis.model_accuracy * 100).toFixed(2)}%</p>
-                <p className="text-sm text-gray-600">Validation Accuracy: {(analysis.validation_accuracy * 100).toFixed(2)}%</p>
-                <p className="text-sm text-gray-600">Latest Prediction: <span className="font-medium uppercase">{analysis.latest_prediction}</span></p>
-                <p className="text-sm text-gray-600">Prediction Confidence: {(analysis.prediction_confidence * 100).toFixed(2)}%</p>
+              {/* Sub-card: Model Accuracy */}
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  Model Accuracy
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {(analysis.model_accuracy * 100).toFixed(2)}%
+                </p>
               </div>
-              <div>
-                <p className="text-sm font-medium mb-1">Trading Signals:</p>
-                <div className="space-y-1">
-                  {renderTradingSignals()}
-                </div>
+    
+              {/* Sub-card: Validation Accuracy */}
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  Validation Accuracy
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {(analysis.validation_accuracy * 100).toFixed(2)}%
+                </p>
+              </div>
+    
+              {/* Sub-card: Latest Prediction */}
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  Latest Prediction
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 font-medium uppercase">
+                  {analysis.latest_prediction}
+                </p>
+              </div>
+    
+              {/* Sub-card: Prediction Confidence */}
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md shadow-sm opacity-90 hover:opacity-100 transition-opacity">
+                <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  Prediction Confidence
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {(analysis.prediction_confidence * 100).toFixed(2)}%
+                </p>
               </div>
             </div>
           </div>
+    
+          {/* Cardlet: Trading Signals */}
+          <div className="group bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 p-4 rounded-lg shadow-md hover:shadow-xl transition-all hover:scale-105">
+          <h3 className="text-lg font-medium mb-2 text-slate-100 dark:text-gray-100 flex items-center gap-2">
+            <GiTakeMyMoney className="h-12 w-12 p-2 inline-block ml-2 text-amber-200 rounded-full bg-slate-500 dark:bg-slate-700 transform rotate-12" />
+            Trading Signals
+          </h3>
+          <div className="space-y-1">{renderTradingSignals()}</div>
+        </div>
+        </div>
+       
         )}
       </div>
 

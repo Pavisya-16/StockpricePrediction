@@ -9,6 +9,10 @@ import DonutChart from './Chart/DonutChart';
 import TruncatedText from './Chart/TruncatedText';
 import { ChartBar, Users } from 'lucide-react';
 import FooterBar from '@/components/FooterBar';
+import { FaAngleDoubleUp } from "react-icons/fa";
+import { FaSortNumericDown } from "react-icons/fa";
+import { FaAngleDoubleDown } from "react-icons/fa";
+
 
 
 const formatNumber = (num) => {
@@ -114,7 +118,7 @@ const StockDashboard = ({ data }) => {
         <div className="flex flex-col lg:flex-row justify-between ">
           {/* Left Section */}
           <div className="flex-1">
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
+            <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 dark:text-gray-100">
               {basic.company_name || 'Company Name Not Available'}
             </h1>
             <div className="flex flex-wrap items-center gap-2 text-sm lg:text-base text-gray-600 dark:text-gray-400 mt-2">
@@ -143,24 +147,26 @@ const StockDashboard = ({ data }) => {
             </div>
           </div>
 
-          {/* Right Section */}
-          <div className="flex-none text-left lg:text-right mt-4 lg:mt-0">
-            <p className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100">
-              <SafeNumber value={trading.current_price} prefix="₹" />
+        {/* Right Section */}
+        <div className="flex-none text-left lg:text-right mt-4 lg:mt-0">
+          <p className="text-2xl lg:text-3xl font-sans text-green-600 dark:text-green-300 flex items-center">
+            <SafeNumber value={trading.current_price} prefix="₹" />
+            <FaAngleDoubleUp className='dark:text-amber-400 mr-2' /> {/* Added margin-right for spacing */}
+          </p>
+          {priceChange !== null && priceChangePercent !== null && (
+            <p
+              className={`text-sm lg:text-lg ${
+                isPriceUp
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'
+              } flex items-center`}
+            >
+              {isPriceUp ? '+' : ''}
+              {priceChange.toFixed(2)} ({priceChangePercent.toFixed(2)}%)
+              <FaAngleDoubleDown className='dark:text-red-400 mr-2' /> {/* Added margin-right for spacing */}
             </p>
-            {priceChange !== null && priceChangePercent !== null && (
-              <p
-                className={`text-sm lg:text-lg ${
-                  isPriceUp
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-red-600 dark:text-red-400'
-                }`}
-              >
-                {isPriceUp ? '+' : ''}
-                {priceChange.toFixed(2)} ({priceChangePercent.toFixed(2)}%)
-              </p>
-            )}
-          </div>
+          )}
+        </div>
         </div>
       </div>
 
@@ -183,7 +189,7 @@ const StockDashboard = ({ data }) => {
 
       {/* Profitability Metrics Section */}
       <div className="mb-6">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white  border-gray-600 dark:border-gray-300 pt-4 mb-6">
+        <h3 className="text-2xl font-sans text-gray-900 dark:text-white  border-gray-600 dark:border-gray-300 pt-4 mb-6">
           Profitability Metrics
         </h3>
 
@@ -224,7 +230,7 @@ const StockDashboard = ({ data }) => {
 
       {/* Valuation Metrics Title and Quick Stats Grid */}
       <div className="mb-6 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 border-t-4 border-amber-400 dark:border-teal-600">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Valuation Metrics</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Valuation Metrics</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {quickMetrics.map((metric) => (
                   <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border-t-4 border-transparent hover:border-blue-500 transition-all duration-300">
