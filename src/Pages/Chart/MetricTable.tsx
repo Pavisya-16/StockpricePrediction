@@ -13,8 +13,8 @@ const MetricTable = ({ title, metrics }) => {
           <tbody>
             {metrics.map(({ label, value }) => (
               <tr key={label} className="border-b">
-                <td className="py-2 text-gray-600">{label}</td>
-                <td className="py-2 text-right">{value}</td>
+                <td className="py-2 text-gray-700 hover:text-orange-500 dark:text-gray-300 dark:hover:text-teal-200 ">{label}</td>
+                <td className="py-2 text-right text-gray-700 hover:text-amber-500 dark:hover:text-amber-400 dark:text-slate-300">{value}</td>
               </tr>
             ))}
           </tbody>

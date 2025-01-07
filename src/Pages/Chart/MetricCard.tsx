@@ -8,10 +8,10 @@ const MetricCard = ({ label, value, icon: Icon }) => {
       <CardContent className="pt-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium dark:text-slate-500 group-hover:text-sky-700 dark:group-hover:text-teal-200 transition-colors">
+            <p className="text-sm font-medium dark:text-slate-300 group-hover:text-sky-700 dark:group-hover:text-teal-200 transition-colors">
               {label}
             </p>
-            <p className="text-2xl font-bold dark:text-slate-500 group-hover:text-sky-700 dark:group-hover:text-teal-200 transition-colors">
+            <p className="text-2xl font-bold dark:text-slate-300 group-hover:text-sky-700 dark:group-hover:text-teal-200 transition-colors">
               {value}
             </p>
           </div>

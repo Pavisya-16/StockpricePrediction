@@ -9,9 +9,17 @@ import stock1 from '../assets/Bitcoin.png';
 import stock2 from '../assets/Finance Analysis.png';
 import stock3 from '../assets/Investing 2.png';
 import stock4 from '../assets/Bitcoin 2.png';
+import stock5 from '../assets/Banker.png';
+import stock6 from '../assets/Investing 4.png';
+import stock7 from '../assets/Money.png'
+import stock8 from '../assets/Finance App 1.png';
+import stock9 from '../assets/Money Jar.png';
 import { DollarSign } from "lucide-react";
 import CandlestickChart from "./Chart/TradingViewChart";
 import TradingViewChart from "./Chart/TradingViewChart";
+import { AiOutlineCheck } from 'react-icons/ai';  
+import { FaArrowRight } from "react-icons/fa6";
+import { FaCheckCircle } from "react-icons/fa";
 
 export default function SearchMain() {
   const [state, setState] = useState({
@@ -97,7 +105,7 @@ export default function SearchMain() {
             <div className="py-12 text-gray-600 dark:text-slate-200 opacity-2 shadow-white border-dashed border-4 p-5 border-gray-200 rounded-lg text-center">
             {/* Text Section */}
             <div className="mb-8">
-              <span className="text-lg font-semibold dark:text-slate-100">
+              <span className="text-4xl font-semibold dark:text-slate-100 ">
                 Search for a company in the bar above to view - stock details.
                 <DollarSign className="h-12 w-12 inline-block ml-2 text-amber-200 rounded-full bg-cyan-500 dark:bg-slate-400 transform rotate-12" />
                 </span>
@@ -149,8 +157,82 @@ export default function SearchMain() {
                 </div>
               </div>
             </div>
+
+           
+            
+            <div className="flex flex-col md:flex-row items-center gap-8 mt-8 bg-gradient-to-r from-yellow-600 to-red-300 text-white rounded-lg shadow-lg dark:border-gray-300 shadow-white">
+              {/* Left Side: Image */}
+              <div className="w-full md:w-1/2 ">
+                <img src={stock5} alt="Stock Image" className="w-full h-auto rounded-lg" />
+              </div>
+
+              {/* Right Side: Text and Points */}
+              <div className="w-full md:w-1/2">
+                <div className="text-left space-y-6">
+                  {/* Text */}
+                  <div className="text-4xl font-bold text-gray-800 dark:text-slate-100">
+                    <p>Unlock valuable insights and explore the best stock opportunities!</p>
+                  </div>
+
+                  {/* Points with React Icon Check Marks */}
+                  <ul className="list-disc pl-5 space-y-2 text-2xl text-gray-800 dark:text-slate-100">
+                    <li className="flex items-center">
+                      <AiOutlineCheck className="text-green-300 mr-2" size={37} />
+                      <span>Real-time stock data at your fingertips.</span>
+                    </li>
+                    <li className="flex items-center">
+                      <AiOutlineCheck className="text-green-300 mr-2" size={37} />
+                      <span>Detailed insights into market trends and predictions.</span>
+                    </li>
+                    <li className="flex items-center">
+                      <AiOutlineCheck className="text-green-300 mr-2" size={37} />
+                      <span>Instant analysis on stocks you're interested in.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+           
+      
+      <div className="w-full text-black dark:text-white rounded-lg shadow-lg border-2 border-gray-300 dark:border-gray-700 p-6 bg-gradient-to-br from-green-300 via-indigo-400 to-purple-500  mt-4">
+      <div className="flex flex-col md:flex-row items-center justify-center">
+        {/* Left Side: Text and Points */}
+        <div className="flex-1 text-center md:text-center space-y-4">
+          <p className="font-bold text-3xl md:text-4xl">
+          Empowering your journey to smarter trading
+          </p>
+          {/* Points Section */}
+          <div className="space-y-3 text-black dark:text-slate-200">
+            <div className="flex items-center justify-center md:justify-center">
+              <FaCheckCircle className="text-red-500 mr-2 " size={36} />
+              <p className="text-2xl">Real-time data and analysis</p>
+            </div>
+            <div className="flex items-center justify-center md:justify-center">
+              <FaCheckCircle className="text-yellow-600 mr-2" size={36} />
+              <p className="text-2xl">Instant trading opportunities</p>
+            </div>
+            <div className="flex items-center justify-center md:justify-center">
+              <FaCheckCircle className="text-green-700 mr-2"  size={36} />
+              <p className="text-2xl">Comprehensive market insights</p>
+            </div>
           </div>
-          
+        </div>
+
+        {/* Right Side: Image */}
+        <div className="flex-1 mt-4 md:mt-0">
+          <img
+            src={stock9}
+            alt="Explore Trading"
+            className="w-full h-1/2 object-cover rounded-lg"
+          />
+        </div>
+      </div>
+    </div>
+       </div>
+      
+    
+                 
+         
           
           )}
 
