@@ -1,7 +1,7 @@
 // src/components/Chart/MetricCard.jsx
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-
+ 
 const MetricCard = ({ label, value, icon: Icon }) => {
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 hover:scale-105">
@@ -26,5 +26,5 @@ const MetricCard = ({ label, value, icon: Icon }) => {
     </Card>
   );
 };
-
+ 
 export default MetricCard;

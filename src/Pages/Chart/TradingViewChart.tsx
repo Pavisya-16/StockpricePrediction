@@ -230,16 +230,16 @@ const TradingViewChart = ({CName}) => {
 // };
 const renderTradingSignals = () => {
   if (!tradingSignals.signals) return null;
-  
+ 
   const signals = tradingSignals.signals.split('\n')
     .filter(signal => signal && signal.includes(': '))
     .map((signal, index) => {
       const [date, value] = signal.split(': ');
       const isBuySignal = value.toLowerCase() === 'buy'; // Determine if it's a Buy or Sell signal
-
+ 
       return (
         <div key={index} className={`group p-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105 ${isBuySignal ? 'bg-green-50 dark:bg-green-800' : 'bg-red-50 dark:bg-red-800'}`}>
-          
+         
           <div className="flex items-center space-x-2">
            <FaCalendarAlt className="text-gray-500 dark:text-gray-400" />
             <p className="text-sm text-gray-900 dark:text-gray-100">{date}</p>
@@ -250,9 +250,9 @@ const renderTradingSignals = () => {
         </div>
       );
     });
-
-  return signals.length > 0 
-    ? signals 
+ 
+ return signals.length > 0
+    ? signals
     : <div className="group bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105">
         <p className="text-sm text-gray-500 dark:text-gray-400">No recent signals</p>
       </div>;
