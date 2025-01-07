@@ -17,7 +17,7 @@ const FooterBar = () => {
           {/* Address Icon and Text */}
           <div className="flex space-x-2">
             <FaRegAddressCard size={20} />
-            <span className="font-extralight">25th Street, Effiel Garder, Paris</span>
+            <span className="font-extralight">MG Road, Chruch Street, Bangalore </span>
           </div>
           {/* Copyright Icon and Text */}
           <div className="flex space-x-2">
