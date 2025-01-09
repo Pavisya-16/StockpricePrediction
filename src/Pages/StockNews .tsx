@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink, ChevronDown, ChevronUp, Newspaper, ArrowRight, Clock } from 'lucide-react';
 import { fetchNews } from '@/services/stock.service';
 
+
 const StockNews = ({ symbol }) => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,44 +57,44 @@ const StockNews = ({ symbol }) => {
     );
   }
 
-  const displayedNews = isExpanded ? news : news.slice(0, 2);
+  const displayedNews = isExpanded ? news : news.slice(0, 4);
 
   return (
     <div className="space-y-6 font-inter">
-      <div className="flex items-center gap-3 border-b border-gray-200 dark:border-gray-700 pb-4">
-        <div className="bg-blue-50 dark:bg-blue-900/30 p-2 rounded-lg animate-pulse">
-          <Newspaper className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-        </div>
-        <h3 className="text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
-          News Letter
-        </h3>
+      <div className="flex items-center justify-center gap-3 border-b-4 border-gray-200 dark:border-gray-700 pb-4">
+      <div className="bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500 dark:from-purple-800 dark:via-indigo-600 dark:to-blue-500 p-2 rounded-full animate-pulse">
+        <Newspaper className="h-9 w-9 p-1 text-white" />
       </div>
+      <h3 className="text-3xl font-semibold text-gray-900 dark:text-white tracking-tight">
+      Stock News: Today’s Top Stories
+      </h3>
+    </div>
       
       <div className="relative">
         {isExpanded && (
           <>
-            <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white to-transparent dark:from-gray-900 z-10"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white to-transparent dark:from-gray-900 z-10"></div>
+            <div className="absolute top-0 left-0 right-0 h-4  bg-gradient-to-b from-white to-transparent dark:from-gray-900 z-10"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-4  bg-gradient-to-t from-white to-transparent dark:from-gray-900 z-10"></div>
           </>
         )}
         
-        <div className={`${isExpanded ? 'h-96' : ''} overflow-y-auto pr-2 space-y-4 custom-scrollbar`}>
-          {displayedNews.map((item, index) => (
-            <Card 
-              key={index} 
-              className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-blue-500 animate-fadeIn bg-white dark:bg-gray-800"
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              <CardContent className="p-4">
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <a 
-                      href={item.link} 
-                      target="_blank" 
+        <div className={`${isExpanded ? 'h-96' : ''} overflow-y-auto pr-2 custom-scrollbar`}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {displayedNews.map((item, index) => (
+              <Card
+                key={index}
+                className="hover:shadow-lg bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border-t-4 border-double border-transparent hover:border-indigo-700 dark:hover:border-slate-300 transition-all duration-300 dark:border-slate-300 border-slate-500 "
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <CardContent className="p-4">
+                  <div className="flex flex-col gap-2">
+                    <a
+                      href={item.link}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-start gap-2"
                     >
-                      <h4 className="text-base leading-6 font-medium text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors tracking-tight">
+                      <h4 className="text-base leading-6 font-medium text-gray-900 dark:text-white group-hover:text-amber-500 dark:group-hover:text-teal-400 transition-colors tracking-tight border-3">
                         {item.title}
                       </h4>
                       <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all mt-1 flex-shrink-0" />
@@ -109,16 +110,18 @@ const StockNews = ({ symbol }) => {
                       </span>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
-        {news.length > 2 && (
+
+
+        {news.length > 4 && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-4 text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 border rounded-lg hover:border-blue-500 hover:shadow-md tracking-wide uppercase"
+            className=" mx-auto mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-medium text-white hover:text-blue-200 dark:hover:text-blue-200 transition-all duration-300 border rounded-lg hover:border-blue-200 hover:shadow-md tracking-wide uppercase bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500 dark:from-purple-800 dark:via-indigo-600 dark:to-blue-500"
           >
             {isExpanded ? (
               <>
@@ -126,7 +129,7 @@ const StockNews = ({ symbol }) => {
               </>
             ) : (
               <>
-                Show More ({news.length - 2} more) <ChevronDown className="w-4 h-4 animate-bounce" />
+                Show More ({news.length - 4} more) <ChevronDown className="w-4 h-4 animate-bounce" />
               </>
             )}
           </button>

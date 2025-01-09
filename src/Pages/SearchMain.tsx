@@ -77,11 +77,21 @@ export default function SearchMain() {
         <div className="mt-6">
           {loading && (
             <div className="flex justify-center items-center min-h-[400px]">
-              <div className="flex flex-col items-center gap-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
-                <p className="text-gray-600">Loading stock data...</p>
+            <div className="flex flex-col items-center gap-4">
+              {/* Coin animation */}
+              <div className="relative mt-4">
+                <div className="w-16 h-16 rounded-full bg-yellow-400 border-4 border-yellow-500 shadow-lg animate-bounce">
+                  <div className="flex justify-center items-center h-full text-xl font-bold text-yellow-600">
+                    $
+                  </div>
+                </div>
+                <div className="absolute -right-2 top-4 w-6 h-6 rounded-full bg-yellow-400 border-2 border-yellow-500 animate-bounce [animation-delay:0.1s]" />
+                <div className="absolute -left-2 top-4 w-6 h-6 rounded-full bg-yellow-400 border-2 border-yellow-500 animate-bounce [animation-delay:0.2s]" />
               </div>
+              
+              <p className="text-gray-600 dark:white">Loading stock data...</p>
             </div>
+          </div>
           )}
 
           {error && (
@@ -157,8 +167,8 @@ export default function SearchMain() {
                   <img src={stock5} alt="Stock Image" className="w-full h-auto rounded-lg" />
                 </div>
 
-                <div className="w-full md:w-1/2">
-                  <div className="text-left space-y-6">
+                <div className="w-full md:w-1/2 p-6">
+                  <div className="text-start space-y-6">
                     <div className="text-4xl font-bold text-gray-800 dark:text-slate-100">
                       <p>Unlock valuable insights and explore the best stock opportunities!</p>
                     </div>

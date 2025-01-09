@@ -26,9 +26,9 @@ export const EXAMPLE_CREDENTIALS = {
 
 
 export const SIGN_UP_VALIDATION_SCHEMA = Yup.object({
-  username: Yup.string()
-    .required('Username is required')
-    .min(3, 'Username must be at least 3 characters'),
+  name: Yup.string()
+    .required('name is required')
+    .min(3, 'name must be at least 3 characters'),
   email: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
@@ -38,7 +38,7 @@ export const SIGN_UP_VALIDATION_SCHEMA = Yup.object({
 });
 
 export const INITIAL_SIGN_UP_VALUES = {
-  username: '',
+  name: '',
   email: '',
   password: '',
 };

@@ -401,7 +401,7 @@ const StockDashboard = ({ data }) => {
             </div>
           </div>
         </div>
-        <div className="mt-5 mb-6 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 border-t-4 border-blue-400">
+        <div className="mt-5 mb-6 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 border-t-4 border-indigo-600">
         <StockNews symbol={basic.symbol?.split('.')[0]} />
       </div>
       </div>
