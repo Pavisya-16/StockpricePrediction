@@ -37,7 +37,7 @@ export const IconFormField = ({
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        className="w-full bg-transparent border-none focus:outline-none text-gray-800 dark:text-gray-200"
+         className="rounded-md border border-slate-600 dark:border-gray-400 mt-2"
       />
     </div>
     {touched && error && (

@@ -99,7 +99,7 @@ const SignIn = () => {
       </div>
 
       {/* Main Card */}
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-6 space-y-10 border dark:border-gray-300 shadow-white">
+      <div className="w-full max-w-md bg-white border-black shadow-gray-700 dark:bg-gray-800 rounded-3xl shadow-2xl p-6 space-y-10 border dark:border-gray-300 shadow-white">
       {/* Header */}
       <div className="text-center">
         <div className="flex justify-center mb-6">

@@ -1,14 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { ExternalLink, ChevronDown, ChevronUp, Newspaper, ArrowRight, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Clock, Newspaper } from 'lucide-react';
 import { fetchNews } from '@/services/stock.service';
 
-
-const StockNews = ({ symbol }) => {
+const StockNewsCarousel = ({ symbol }) => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const SLIDE_DURATION = 5000; // 5 seconds per slide
+  const TRANSITION_DURATION = 800; // 800ms for transition
+
+  const nextSlide = useCallback(() => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % news.length);
+      setTimeout(() => setIsAnimating(false), TRANSITION_DURATION);
+    }
+  }, [isAnimating, news.length]);
+
+  const prevSlide = useCallback(() => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + news.length) % news.length);
+      setTimeout(() => setIsAnimating(false), TRANSITION_DURATION);
+    }
+  }, [isAnimating, news.length]);
+
+  // Auto-play effect
+  useEffect(() => {
+    let slideInterval;
+
+    if (news.length > 0 && !isPaused) {
+      slideInterval = setInterval(() => {
+        nextSlide();
+      }, SLIDE_DURATION);
+    }
+
+    return () => {
+      if (slideInterval) {
+        clearInterval(slideInterval);
+      }
+    };
+  }, [news.length, isPaused, nextSlide]);
 
   useEffect(() => {
     const fetchNewsData = async () => {
@@ -16,11 +53,7 @@ const StockNews = ({ symbol }) => {
         const response = await fetchNews(symbol, 10);
         setNews(response.news_items);
       } catch (err) {
-        setError(
-          err.response?.data?.message ||
-          err.message ||
-          'Failed to fetch news'
-        );
+        setError(err.response?.data?.message || err.message || 'Failed to fetch news');
       } finally {
         setLoading(false);
       }
@@ -42,140 +75,178 @@ const StockNews = ({ symbol }) => {
 
   if (loading) {
     return (
-      <div className="animate-pulse">
-        <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+      <div className="space-y-4">
+        <div className="animate-pulse flex items-center justify-center gap-3">
+          <div className="h-12 w-12 bg-gray-200 rounded-full"></div>
+          <div className="h-8 bg-gray-200 rounded w-64"></div>
+        </div>
+        <div className="animate-pulse">
+          <div className="h-64 bg-gray-200 rounded"></div>
+        </div>
       </div>
     );
   }
 
   if (error) {
-    return (
-      <div className="text-red-500">
-        Error loading news: {error}
-      </div>
-    );
+    return <div className="text-red-500">Error loading news: {error}</div>;
   }
 
-  const displayedNews = isExpanded ? news : news.slice(0, 4);
-
   return (
-    <div className="space-y-6 font-inter">
-      <div className="flex items-center justify-center gap-3 border-b-4 border-gray-200 dark:border-gray-700 pb-4">
-      <div className="bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500 dark:from-purple-800 dark:via-indigo-600 dark:to-blue-500 p-2 rounded-full animate-pulse">
-        <Newspaper className="h-9 w-9 p-1 text-white" />
-      </div>
-      <h3 className="text-3xl font-semibold text-gray-900 dark:text-white tracking-tight">
-      Stock News: Today’s Top Stories
-      </h3>
-    </div>
-      
-      <div className="relative">
-        {isExpanded && (
-          <>
-            <div className="absolute top-0 left-0 right-0 h-4  bg-gradient-to-b from-white to-transparent dark:from-gray-900 z-10"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-4  bg-gradient-to-t from-white to-transparent dark:from-gray-900 z-10"></div>
-          </>
-        )}
-        
-        <div className={`${isExpanded ? 'h-96' : ''} overflow-y-auto pr-2 custom-scrollbar`}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {displayedNews.map((item, index) => (
-              <Card
-                key={index}
-                className="hover:shadow-lg bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 border-t-4 border-double border-transparent hover:border-indigo-700 dark:hover:border-slate-300 transition-all duration-300 dark:border-slate-300 border-slate-500 "
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <CardContent className="p-4">
-                  <div className="flex flex-col gap-2">
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-start gap-2"
-                    >
-                      <h4 className="text-base leading-6 font-medium text-gray-900 dark:text-white group-hover:text-amber-500 dark:group-hover:text-teal-400 transition-colors tracking-tight border-3">
-                        {item.title}
-                      </h4>
-                      <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transform group-hover:translate-x-1 transition-all mt-1 flex-shrink-0" />
-                    </a>
-                    <div className="mt-2 flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
-                      <span className="font-medium tracking-wide uppercase">
-                        {item.publisher}
-                      </span>
-                      <span className="text-gray-300 dark:text-gray-600">|</span>
-                      <span className="flex items-center gap-1 text-gray-400">
-                        <Clock className="h-3.5 w-3.5" />
-                        {formatDate(item.published)}
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+    <div className="space-y-6">
+      {/* Title Section */}
+      <div className="flex items-center justify-center gap-4 pb-4 animate-fadeIn">
+        <div className="relative group">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 rounded-full blur opacity-60 group-hover:opacity-100 transition duration-700 group-hover:duration-200 animate-pulse"></div>
+          <div className="relative bg-white dark:bg-gray-800 rounded-full p-2 transform transition-transform duration-700 hover:rotate-12">
+            <Newspaper className="h-8 w-8 text-gray-800 dark:text-gray-200 animate-bounce" />
           </div>
         </div>
+        <div className="relative group">
+          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 animate-slideIn">
+            Equity Insights: Breaking Updates
+          </h2>
+          <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-pink-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 transform origin-left transition-transform duration-700 scale-x-0 group-hover:scale-x-100"></div>
+        </div>
+      </div>
 
+      {/* Carousel Section */}
+      <div 
+        className="relative w-full h-96 overflow-hidden rounded-xl shadow-2xl transform transition-all duration-700 hover:scale-[1.02]"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Progress Bar */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 z-20">
+          <div 
+            className="h-full bg-gradient-to-r from-pink-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 transition-all duration-300"
+            style={{
+              width: `${isPaused ? 0 : '100%'}`,
+              transition: `width ${SLIDE_DURATION}ms linear`,
+              animation: isPaused ? 'none' : `progressBar ${SLIDE_DURATION}ms linear infinite`
+            }}
+          />
+        </div>
 
-
-        {news.length > 4 && (
+        <div className="absolute inset-0 flex items-center justify-between z-10 px-4">
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className=" mx-auto mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-medium text-white hover:text-blue-200 dark:hover:text-blue-200 transition-all duration-300 border rounded-lg hover:border-blue-200 hover:shadow-md tracking-wide uppercase bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500 dark:from-purple-800 dark:via-indigo-600 dark:to-blue-500"
+            onClick={() => {
+              prevSlide();
+              setIsPaused(true);
+              setTimeout(() => setIsPaused(false), 1000);
+            }}
+            disabled={isAnimating}
+            className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 transform hover:scale-110 hover:-translate-x-1"
           >
-            {isExpanded ? (
-              <>
-                Show Less <ChevronUp className="w-4 h-4 animate-bounce" />
-              </>
-            ) : (
-              <>
-                Show More ({news.length - 4} more) <ChevronDown className="w-4 h-4 animate-bounce" />
-              </>
-            )}
+            <ChevronLeft className="w-6 h-6" />
           </button>
-        )}
+          <button
+            onClick={() => {
+              nextSlide();
+              setIsPaused(true);
+              setTimeout(() => setIsPaused(false), 1000);
+            }}
+            disabled={isAnimating}
+            className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 transform hover:scale-110 hover:translate-x-1"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="relative h-full">
+          {news.map((item, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-all duration-800 transform ${
+                index === currentIndex 
+                  ? 'translate-x-0 opacity-100 scale-100' 
+                  : index < currentIndex 
+                  ? '-translate-x-full opacity-0 scale-95' 
+                  : 'translate-x-full opacity-0 scale-95'
+              }`}
+            >
+              <div className="relative h-full transform transition-transform duration-700 hover:scale-[1.01]">
+                <img
+                  src={item.thumbnail || '/api/placeholder/800/600'}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-all duration-700"
+                />
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent transition-opacity duration-700" />
+                
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-all duration-700 translate-y-0 hover:-translate-y-2">
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block"
+                  >
+                    <h3 className="text-2xl font-bold mb-3 group-hover:text-blue-400 transition-colors duration-500">
+                      {item.title}
+                    </h3>
+                  </a>
+                  
+                  <div className="flex items-center gap-4 text-sm">
+                    <span className="font-medium tracking-wide uppercase text-blue-400">
+                      {item.publisher}
+                    </span>
+                    <span className="flex items-center gap-1 text-gray-300">
+                      <Clock className="h-4 w-4" />
+                      {formatDate(item.published)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+          {news.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                if (!isAnimating) {
+                  setCurrentIndex(index);
+                  setIsPaused(true);
+                  setTimeout(() => setIsPaused(false), 1000);
+                }
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                index === currentIndex 
+                  ? 'bg-white w-6' 
+                  : 'bg-white/50 hover:bg-white/75 hover:w-4'
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       <style jsx global>{`
-        .custom-scrollbar {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: rgba(155, 155, 155, 0.5);
-          border-radius: 2px;
-        }
-        
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(155, 155, 155, 0.7);
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateX(-20px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes progressBar {
+          from { width: 0; }
+          to { width: 100%; }
         }
 
         .animate-fadeIn {
-          animation: fadeIn 0.4s ease-out forwards;
+          animation: fadeIn 1s ease-out forwards;
+        }
+
+        .animate-slideIn {
+          animation: slideIn 1s ease-out forwards;
         }
       `}</style>
     </div>
   );
 };
 
-export default StockNews;
+export default StockNewsCarousel;

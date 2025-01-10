@@ -89,7 +89,7 @@ export default function SearchMain() {
                 <div className="absolute -left-2 top-4 w-6 h-6 rounded-full bg-yellow-400 border-2 border-yellow-500 animate-bounce [animation-delay:0.2s]" />
               </div>
               
-              <p className="text-gray-600 dark:white">Loading stock data...</p>
+              <p className="text-gray-600 dark:text-white">Loading stock data...</p>
             </div>
           </div>
           )}
