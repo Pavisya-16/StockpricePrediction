@@ -77,3 +77,16 @@ export const fetchStockCharts = async (symbol, interval = '1d') => {
     throw error;
   }
 };
+
+
+export const fetchNews = async (symbol: string, limit: number = 10) => {
+  try {
+    const response = await axiosInstance.get(`${import.meta.env.VITE_Dev_URL}/stocks/stock/news/${symbol}`, {
+      params: { limit }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching news:', error);
+    throw error;
+  }
+};

@@ -22,6 +22,7 @@ import PriceRangeIndicator from "./Chart/PriceRangeIndicator";
 import DonutChart from "./Chart/DonutChart";
 import TruncatedText from "./Chart/TruncatedText";
 import { FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/fa";
+import StockNews from "./StockNews ";
 
 const formatNumber = (num) => {
   if (!num && num !== 0) return "N/A";
@@ -102,12 +103,15 @@ const MetricCardWithTooltip = ({ label, value, icon: Icon, description }) => (
 );
 
 const StockDashboard = ({ data }) => {
+  // console.log("quickMetrics",quickMetrics);
+  
   if (!data) return null;
 
   const trading = data.trading_information || {};
   const metrics = data.key_metrics || {};
   const financial = data.financial_metrics || {};
   const basic = data.basic_information || {};
+  const intrinsic_value = data.intrinsic_value || {}
 
   const priceChange =
     trading.current_price && trading.previous_close
@@ -393,10 +397,15 @@ const StockDashboard = ({ data }) => {
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
+        <div className="mt-5 mb-6 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 border-t-4 border-indigo-600">
+        <StockNews symbol={basic.symbol?.split('.')[0]} />
       </div>
+      </div>
+      
 
       {/* Profitability Metrics */}
       <div className="mb-6">

@@ -9,4 +9,8 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // server: {
+  //   host: 'StockVision', // Custom hostname
+  //   port: 5173,          // Port remains the same
+  // }
 })

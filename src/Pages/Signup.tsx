@@ -57,7 +57,7 @@ const SignUp = () => {
             </Link>
         </div>
 
-        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 top-1  border dark:border-gray-300 shadow-white">
+        <div className="w-full max-w-md border-black shadow-gray-700 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 top-1  border dark:border-gray-300 shadow-white">
           {/* Header */}
               <div className="text-center">
                 <div className="flex justify-center mb-6">
@@ -74,16 +74,17 @@ const SignUp = () => {
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             <IconFormField
-              id="username"
-              name="username"
+              id="name"
+              name="name"
               type="text"
               placeholder="Username"
               icon={FiUser}
-              value={formik.values.username}
+              value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.errors.username}
-              touched={formik.touched.username}
+              error={formik.errors.name}
+              touched={formik.touched.name}
+              
             />
 
             <IconFormField

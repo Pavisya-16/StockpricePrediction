@@ -41,6 +41,8 @@ export const storeAuthData = (data: AuthResponse) => {
 };
 
 export const SignUpApi = async (values: SignUpFormValues): Promise<SignUpResponse> => {
+  console.log("values",values);
+  
     
     const response = await axios.post<SignUpResponse>(
       `${import.meta.env.VITE_Dev_URL}/auth/register`,

@@ -111,7 +111,7 @@ const NavBar = () => {
 
   return (
     <header className="shadow-md sticky top-0 bg-white dark:bg-gray-900 z-50">
-      <div className="px-4 py-3 md:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="px-4 py-3 md:px-6 lg:px-8 max-w-9xl ">
         <div className="flex items-center justify-between">
           {/* Logo Section */}
           <div className="flex items-center flex-shrink-0 space-x-2">
