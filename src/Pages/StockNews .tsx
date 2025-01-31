@@ -95,13 +95,13 @@ const StockNewsCarousel = ({ symbol }) => {
   // }
   if (!news.length) {
     return (
-      <div className="flex flex-col  items-center justify-center py-4">
+      <div className="flex flex-col  items-center justify-center py-4  bg-gray-200 dark:bg-gray-700">
      <img
       src={StockNewsItem}
-      className="w-60 h-40 object-cover rounded-lg shadow-md animate-pulse bg-gray-200 dark:bg-gray-700"
+      className="w-60 h-40 object-cover rounded-lg animate-pulse"
     />
-        <p className="text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-          News Desk is Empty!</p> 
+        <p className="text-3xl mt-2 font-semibold text-transparent opacity-2 bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+          News Desk is Empty</p> 
       </div>
     );
   }
